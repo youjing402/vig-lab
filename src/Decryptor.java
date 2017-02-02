@@ -24,7 +24,6 @@ public class Decryptor {
 		
 		int[] ciphercode = stringToCode(ciphertext);
 		double[] frequencyList = {0.0938, 0.0154, 0.0149, 0.047, 0.1015, 0.0203, 0.0286, 0.0209, 0.0582, 0.0061, 0.0314, 0.0528, 0.0347, 0.0854, 0.0448, 0.0184, 0.0002, 0.0843, 0.0659, 0.0769, 0.0192, 0.0242, 0.0014, 0.0016, 0.0071, 0.0007, 0.0134, 0.018, 0.0131};
-		//System.out.println(frequencyList.length);
 		double[][] allShiftCharFrequency = new double[keyLength][frequencyList.length];
 		
 		for (int i=0; i<keyLength; i++) {
@@ -40,9 +39,7 @@ public class Decryptor {
 			}
 			for (int m=0; m<frequencyList.length; m++) {
 				allShiftCharFrequency[i][m] = charNumber[m] * 1.0 / charLength;
-				//System.out.println(allShiftCharFrequency[i][m]);
 			}
-			//System.out.println("");
 		}
 		
 		int[] shiftList = new int[keyLength];
@@ -59,11 +56,7 @@ public class Decryptor {
 					count ++;
 					int modIndex = (i + j) % characterList.length;
 					if (modIndex < 29) {
-						//System.out.println(frequencyList.length);
-						//System.out.println(modIndex);
 						score += frequencyList[modIndex] * allShiftCharFrequency[m][j];
-						//System.out.println(score);
-						//System.out.println(maxScore);
 					}
 				}
 				score = score / count;
@@ -71,13 +64,9 @@ public class Decryptor {
 				if (score > maxScore) {
 					maxScore = score;
 					maxShift = i;
-					//System.out.println(maxShift);
 				}
 			}
 			shiftList[m] = maxShift;
-			//System.out.println(maxScore);
-			//System.out.println("");
-			//System.out.println(maxShift);
 		}
 		
 		char[] key = new char[keyLength];
@@ -86,7 +75,6 @@ public class Decryptor {
 		}
 		
 		return new String(key);
-		//return maxShift;
 	}
 	
 	public static void main (String[] args) {
