@@ -1,5 +1,7 @@
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.OutputStreamWriter;
 import java.util.Arrays;
 
@@ -17,7 +19,7 @@ public class Decryptor {
 	}
 	
 	public int guessKeyLength(String ciphertext) {
-		return 5;
+		return 2;
 	}
 	
 	public String calculateKey (int keyLength, String ciphertext) {
@@ -99,15 +101,30 @@ public class Decryptor {
 		return decryptedtext;
 	}
 	
+	public String readFile (String fileName) {
+		try {
+			//fileName = "plaintext.txt";
+			BufferedReader reader = new BufferedReader(new FileReader(fileName));
+			String line;
+			line = reader.readLine();
+			reader.close();
+			return line;
+		} catch (Exception e) {
+			return "";
+		}
+	}
+	
 	public static void main (String[] args) {
 		Encryptor e = new Encryptor();
-		String ciphertext = e.encrypt("Stora delar av brons stenar demonterades och byttes vid behov, bland annat avlägsnades samtliga järndubbar som blivit rostiga. Ett stort problem var ledningsdragningarna över bron. Det rörde sig om många eftersom här gick och går huvudstråket av ledningar för vatten, el, gas, fjärrvärme, telefon och andra medier mellan Gamla stan och Norrmalm. I körbanan byttes samtliga rörledningar, hela ytan under körbanan är täckt med skyddsrör av stål. Efter ett omfattande förstärkningsarbete med bland annat installation av över jetpelare som står förankrade i Brunkebergsåsens grus skall bron hålla i många år till.".toLowerCase(), "bwwae");
 		Decryptor d = new Decryptor();
-		int keyLength = 12;
-		//String ciphertext = "aio rezmlgye,i kl  tzrxaö,idf åowaösveyszvllpnis,öösionhivgxpriiis,oölpkj vay xay  einzrösvey gvpnivtdisddwiraöeillttt.dpriszmimplweös,aionhishdöaisaeöireionhiiiuydln,arsqawliäydl yeö t  yoe.rzpl plweö ,iwlionhimpdiiiaqrtkl.ipf  axml  ä,tiecplnoeöaö  öoeösveyszvllpninzröu, aio  åoayaittlwfglwey.";
-		//String key = d.calculateKey(keyLength, ciphertext);
-		//System.out.println(key);
-		//System.out.println(ciphertext);
+		String ciphertext = e.encrypt("Stora delar av brons stenar demonterades och byttes vid behov, bland annat avlägsnades samtliga järndubbar som blivit rostiga. Ett stort problem var ledningsdragningarna över bron. Det rörde sig om många eftersom här gick och går huvudstråket av ledningar för vatten, el, gas, fjärrvärme, telefon och andra medier mellan Gamla stan och Norrmalm. I körbanan byttes samtliga rörledningar, hela ytan under körbanan är täckt med skyddsrör av stål. Efter ett omfattande förstärkningsarbete med bland annat installation av över jetpelare som står förankrade i Brunkebergsåsens grus skall bron hålla i många år till.".toLowerCase(), "ko");
+		//String ciphertext = d.readFile(fileName);
+		/*
+		String ciphertext = "aio rezmlgye,i kl  tzrxaö,idf åowaösveyszvllpnis,öösionhivgxpriiis,oölpkj vay xay  einzrösvey gvpnivtdisddwiraöeillttt.dpriszmimplweös,aionhishdöaisaeöireionhiiiuydln,arsqawliäydl yeö t  yoe.rzpl plweö ,iwlionhimpdiiiaqrtkl.ipf  axml  ä,tiecplnoeöaö  öoeösveyszvllpninzröu, aio  åoayaittlwfglwey.";
+		String key = d.calculateKey(keyLength, ciphertext);
+		System.out.println(key);
+		System.out.println(ciphertext);
+		*/
 		String plaintext = d.decrypt(ciphertext);
 		System.out.println(plaintext);
 	}
