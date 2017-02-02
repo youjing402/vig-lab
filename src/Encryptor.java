@@ -33,10 +33,7 @@ public class Encryptor {
 			int keyIndex = Arrays.asList(characterList).indexOf(keyChar);
 			int index = Arrays.asList(characterList).indexOf(character);
 			int encryptedIndex = (index + keyIndex) % 32;
-			//System.out.println(index);
 			char encryptedChar = characterList[encryptedIndex];
-			//System.out.println(encryptedChar);
-			//System.out.println(keyChar);
 			System.out.println(size);
 			encryptedtext[i] = encryptedChar;
 		}
@@ -46,7 +43,7 @@ public class Encryptor {
 	public static void main (String[] args) {
 		Encryptor e = new Encryptor();
 		//char[] a1 = "varsågod".toCharArray();
-		String encryptedString = e.encrypt("Vid geomagnetiska stormar, då polarskensovalen störs och växer i storlek, kan man se norrsken även vid sydligare latituder som mellersta och södra Sverige och i undantagsfall ända ner i Sydeuropa eller till och med i Afrika. På samma sätt expanderar söderskensovalen norrut vid sådana tillfällen.".toLowerCase(), "morgon");
+		String encryptedString = e.encrypt("Stora delar av brons stenar demonterades och byttes vid behov, bland annat avlägsnades samtliga järndubbar som blivit rostiga. Ett stort problem var ledningsdragningarna över bron. Det rörde sig om många eftersom här gick och går huvudstråket av ledningar för vatten, el, gas, fjärrvärme, telefon och andra medier mellan Gamla stan och Norrmalm. I körbanan byttes samtliga rörledningar, hela ytan under körbanan är täckt med skyddsrör av stål. Efter ett omfattande förstärkningsarbete med bland annat installation av över jetpelare som står förankrade i Brunkebergsåsens grus skall bron hålla i många år till.".toLowerCase(), "lala");
 		System.out.println(encryptedString);
 		try {
 			BufferedWriter out = new BufferedWriter(new OutputStreamWriter( new FileOutputStream("outfilename"), "UTF-8"));

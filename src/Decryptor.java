@@ -17,13 +17,13 @@ public class Decryptor {
 	}
 	
 	public int guessKeyLength(String ciphertext) {
-		
+		return 1;
 	}
 	
 	public String calculateKey (int keyLength, String ciphertext) {
 		
 		int[] ciphercode = stringToCode(ciphertext);
-		double[] frequencyList = {0.1004, 0.0131, 0.0171, 0.049, 0.0985, 0.0181, 0.0344, 0.0285, 0.0501, 0.009, 0.0324, 0.0481, 0.0355, 0.0845, 0.0406, 0.0157, 0.0001, 0.0788, 0.0532, 0.0889, 0.0186, 0.0255, 0.0011, 0.0049, 0.0004, 0.0166, 0.021, 0.015};
+		double[] frequencyList = {0.0938, 0.0154, 0.0149, 0.047, 0.1015, 0.0203, 0.0286, 0.0209, 0.0582, 0.0061, 0.0314, 0.0528, 0.0347, 0.0854, 0.0448, 0.0184, 0.0002, 0.0843, 0.0659, 0.0769, 0.0192, 0.0242, 0.0014, 0.0016, 0.0071, 0.0007, 0.0134, 0.018, 0.0131};
 		//System.out.println(frequencyList.length);
 		double[][] allShiftCharFrequency = new double[keyLength][frequencyList.length];
 		
@@ -32,7 +32,7 @@ public class Decryptor {
 			Arrays.fill(charNumber, 0);
 			int charLength = 0;
 			for (int j=i; j<ciphercode.length; j+=keyLength) {
-				if(ciphercode[j] < 28) {
+				if(ciphercode[j] < 29) {
 					charLength++;
 					int charIndex = ciphercode[j];
 					charNumber[charIndex]++;
@@ -53,10 +53,12 @@ public class Decryptor {
 			// each shift loop
 			for (int i=0; i<characterList.length; i++) {
 				double score = 0;
+				int count = 0;
 				// each letter loop
 				for (int j=0; j<frequencyList.length; j++) {
+					count ++;
 					int modIndex = (i + j) % characterList.length;
-					if (modIndex < 28) {
+					if (modIndex < 29) {
 						//System.out.println(frequencyList.length);
 						//System.out.println(modIndex);
 						score += frequencyList[modIndex] * allShiftCharFrequency[m][j];
@@ -64,6 +66,7 @@ public class Decryptor {
 						//System.out.println(maxScore);
 					}
 				}
+				score = score / count;
 				System.out.println(score);
 				if (score > maxScore) {
 					maxScore = score;
@@ -87,10 +90,13 @@ public class Decryptor {
 	}
 	
 	public static void main (String[] args) {
+		Encryptor e = new Encryptor();
+		String ciphertext = e.encrypt("Stora delar av brons stenar demonterades och byttes vid behov, bland annat avlägsnades samtliga järndubbar som blivit rostiga. Ett stort problem var ledningsdragningarna över bron. Det rörde sig om många eftersom här gick och går huvudstråket av ledningar för vatten, el, gas, fjärrvärme, telefon och andra medier mellan Gamla stan och Norrmalm. I körbanan byttes samtliga rörledningar, hela ytan under körbanan är täckt med skyddsrör av stål. Efter ett omfattande förstärkningsarbete med bland annat installation av över jetpelare som står förankrade i Brunkebergsåsens grus skall bron hålla i många år till.".toLowerCase(), "bwwaejjj .pv");
 		Decryptor d = new Decryptor();
-		int keyLength = 6;
-		String ciphertext = "bwuduråårmär.wdqok,b.xån mojikäöög..ws,yöcmzvtl..kcyläovoäjeq.ool..öcrsxklägäkyo,darjä.x..ws,djcqäoäwqjajjzvsocklymbzzcqq.oyözjåvrzr aegläovoykq ooydr wxkläovoolbzrrtbnsawgzyjj,jokzscdwk,gukc,å rdsyxscdbvxzouqujåvjlvjowxwxmnovik,o sok,jezlrd rtrr ocdajpscyyrza.äoyqäotö, ceddvpldarnzoozwyxtmrzrzn";
+		int keyLength = 12;
+		//String ciphertext = "aio rezmlgye,i kl  tzrxaö,idf åowaösveyszvllpnis,öösionhivgxpriiis,oölpkj vay xay  einzrösvey gvpnivtdisddwiraöeillttt.dpriszmimplweös,aionhishdöaisaeöireionhiiiuydln,arsqawliäydl yeö t  yoe.rzpl plweö ,iwlionhimpdiiiaqrtkl.ipf  axml  ä,tiecplnoeöaö  öoeösveyszvllpninzröu, aio  åoayaittlwfglwey.";
 		String key = d.calculateKey(keyLength, ciphertext);
 		System.out.println(key);
+		System.out.println(ciphertext);
 	}
 }
