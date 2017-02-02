@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class KeyLengthGuesser {
-	public Map<Integer, Double> guess(String text){
+	public ArrayList<Integer> guess(String text){
 		HashMap<Integer,Double> guesses = new HashMap<Integer, Double>();
 		for(int i = 1; i <= 16; i++){
 			ArrayList<String> everyStr = this.strToEvery(i, text);
@@ -23,7 +23,9 @@ public class KeyLengthGuesser {
 		Map<Integer,Double> sorted = new TreeMap(new ValueComparator(guesses));
 		sorted.putAll(guesses);
 		
-		return sorted;
+		ArrayList<Integer> ret = new ArrayList<Integer>(sorted.keySet());
+		
+		return ret;
 	}
 	
 	public ArrayList<String> strToEvery(int every, String str){
@@ -61,6 +63,15 @@ public class KeyLengthGuesser {
 		}
 		Double ret = (double)sum/(len * (len-1));
 		return ret;
+	}
+	
+	public static void main (String[] args) {
+		KeyLengthGuesser klg = new KeyLengthGuesser();
+		ArrayList<Integer> guesses = klg.guess("bwudur.ådtnhxvewooybäcåd,,ahhpäöög..äsq.oyeywzldzk,dlrphazijq.ool.eöuyenckömäosoåoahknrv,ews,djcväacigb.kpzzmo,vlontlxbvq.oyözoåhylhv.fml.ivkdkg,aawcw wxklätvav xrqszbrmasrzokäqhnpzscdwkdggruusösjsörs,oblylaspzjåvjlvooi,inempäioyoz oa.äwxkwd rtrrcouks.hrd,yvtaägoornaräd ceddvulvhddrnp.wörtiözhå.");
+		for(int i = 0; i < guesses.size()
+				; i++){
+			System.out.println(guesses.get(i));
+		}
 	}
 }
 

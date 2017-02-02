@@ -3,6 +3,7 @@ import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Decryptor {
@@ -19,7 +20,9 @@ public class Decryptor {
 	}
 	
 	public int guessKeyLength(String ciphertext) {
-		return 2;
+		KeyLengthGuesser guesser = new KeyLengthGuesser();
+		ArrayList<Integer> keys = guesser.guess(ciphertext);
+		return keys.get(0);
 	}
 	
 	public String calculateKey (int keyLength, String ciphertext) {
@@ -62,7 +65,7 @@ public class Decryptor {
 					}
 				}
 				score = score / count;
-				System.out.println(score);
+				//System.out.println(score);
 				if (score > maxScore) {
 					maxScore = score;
 					maxShift = i;
@@ -76,6 +79,7 @@ public class Decryptor {
 			key[i] = characterList[(32 - shiftList[i]) % 32];
 		}
 		
+		System.out.println(new String(key));
 		return new String(key);
 	}
 	
@@ -115,16 +119,18 @@ public class Decryptor {
 	}
 	
 	public static void main (String[] args) {
-		Encryptor e = new Encryptor();
-		Decryptor d = new Decryptor();
-		String ciphertext = e.encrypt("Stora delar av brons stenar demonterades och byttes vid behov, bland annat avlägsnades samtliga järndubbar som blivit rostiga. Ett stort problem var ledningsdragningarna över bron. Det rörde sig om många eftersom här gick och går huvudstråket av ledningar för vatten, el, gas, fjärrvärme, telefon och andra medier mellan Gamla stan och Norrmalm. I körbanan byttes samtliga rörledningar, hela ytan under körbanan är täckt med skyddsrör av stål. Efter ett omfattande förstärkningsarbete med bland annat installation av över jetpelare som står förankrade i Brunkebergsåsens grus skall bron hålla i många år till.".toLowerCase(), "ko");
+		//String ciphertext = e.encrypt("Stora delar av brons stenar demonterades och byttes vid behov, bland annat avlägsnades samtliga järndubbar som blivit rostiga. Ett stort problem var ledningsdragningarna över bron. Det rörde sig om många eftersom här gick och går huvudstråket av ledningar för vatten, el, gas, fjärrvärme, telefon och andra medier mellan Gamla stan och Norrmalm. I körbanan byttes samtliga rörledningar, hela ytan under körbanan är täckt med skyddsrör av stål. Efter ett omfattande förstärkningsarbete med bland annat installation av över jetpelare som står förankrade i Brunkebergsåsens grus skall bron hålla i många år till.".toLowerCase(), "kolpwpwlbwsp");
 		//String ciphertext = d.readFile(fileName);
 		/*
+		Encryptor e = new Encryptor();
 		String ciphertext = "aio rezmlgye,i kl  tzrxaö,idf åowaösveyszvllpnis,öösionhivgxpriiis,oölpkj vay xay  einzrösvey gvpnivtdisddwiraöeillttt.dpriszmimplweös,aionhishdöaisaeöireionhiiiuydln,arsqawliäydl yeö t  yoe.rzpl plweö ,iwlionhimpdiiiaqrtkl.ipf  axml  ä,tiecplnoeöaö  öoeösveyszvllpninzröu, aio  åoayaittlwfglwey.";
 		String key = d.calculateKey(keyLength, ciphertext);
 		System.out.println(key);
 		System.out.println(ciphertext);
 		*/
+		Decryptor d = new Decryptor();
+		String fileName = args[0];
+		String ciphertext = d.readFile(fileName);
 		String plaintext = d.decrypt(ciphertext);
 		System.out.println(plaintext);
 	}
