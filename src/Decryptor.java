@@ -46,10 +46,13 @@ public class Decryptor {
 		double[] frequencyList = {0.0938, 0.0154, 0.0149, 0.047, 0.1015, 0.0203, 0.0286, 0.0209, 0.0582, 0.0061, 0.0314, 0.0528, 0.0347, 0.0854, 0.0448, 0.0184, 0.0002, 0.0843, 0.0659, 0.0769, 0.0192, 0.0242, 0.0014, 0.0016, 0.0071, 0.0007, 0.0134, 0.018, 0.0131};
 		double[][] allShiftCharFrequency = new double[keyLength][frequencyList.length];
 		
+		// calculate the character frequency list for all groups. 
+		// groups are split based on the key length.
 		for (int i=0; i<keyLength; i++) {
 			int[] charNumber = new int[characterList.length];
 			Arrays.fill(charNumber, 0);
 			int charLength = 0;
+			// count the occurrence of a letter (excluding punctuation)
 			for (int j=i; j<ciphercode.length; j+=keyLength) {
 				if(ciphercode[j] < 29) {
 					charLength++;
@@ -82,6 +85,7 @@ public class Decryptor {
 						score += frequencyList[modIndex] * allShiftCharFrequency[m][j];
 					}
 				}
+				// calculate average
 				score = score / count;
 				if (score > maxScore) {
 					maxScore = score;
@@ -96,7 +100,7 @@ public class Decryptor {
 			key[i] = characterList[(32 - shiftList[i]) % 32];
 		}
 		
-		System.out.println(new String(key));
+		System.out.println("Guessed Key: " + new String(key));
 		return new String(key);
 	}
 	
@@ -155,20 +159,19 @@ public class Decryptor {
 	}
 	
 	
+	/**
+	 * Decrypt the string in the given file. File name as the args[0].
+	 * @param args
+	 */
 	public static void main (String[] args) {
-		//String ciphertext = e.encrypt("Stora delar av brons stenar demonterades och byttes vid behov, bland annat avlägsnades samtliga järndubbar som blivit rostiga. Ett stort problem var ledningsdragningarna över bron. Det rörde sig om många eftersom här gick och går huvudstråket av ledningar för vatten, el, gas, fjärrvärme, telefon och andra medier mellan Gamla stan och Norrmalm. I körbanan byttes samtliga rörledningar, hela ytan under körbanan är täckt med skyddsrör av stål. Efter ett omfattande förstärkningsarbete med bland annat installation av över jetpelare som står förankrade i Brunkebergsåsens grus skall bron hålla i många år till.".toLowerCase(), "kolpwpwlbwsp");
-		//String ciphertext = d.readFile(fileName);
-		/*
 		Encryptor e = new Encryptor();
-		String ciphertext = "aio rezmlgye,i kl  tzrxaö,idf åowaösveyszvllpnis,öösionhivgxpriiis,oölpkj vay xay  einzrösvey gvpnivtdisddwiraöeillttt.dpriszmimplweös,aionhishdöaisaeöireionhiiiuydln,arsqawliäydl yeö t  yoe.rzpl plweö ,iwlionhimpdiiiaqrtkl.ipf  axml  ä,tiecplnoeöaö  öoeösveyszvllpninzröu, aio  åoayaittlwfglwey.";
-		String key = d.calculateKey(keyLength, ciphertext);
-		System.out.println(key);
-		System.out.println(ciphertext);
-		*/
+		//String ciphertext = e.encrypt("Japan har under tidigare geologiska tidsåldrar haft landförbindelse med både nuvarande Ryssland och Korea. Förbindelsen mellan Japan och Korea bröts inte förrän under den senaste istiden. Både djur och växter är därför till relativt stor del nära släkt med arter på den asiatiska kontinenten, även om de är endemiska för Japan. Som exempel kan nämnas att stora trädslag såsom gran, tall, björk, viden, al, bok, ek och poppel finns representerade med olika arter. En del av dessa som till exempel blåskatan".toLowerCase(), "kakakal wwka");
+		//String ciphertext = e.encrypt("Stora delar av brons stenar demonterades och byttes vid behov, bland annat avlägsnades samtliga järndubbar som blivit rostiga. Ett stort problem var ledningsdragningarna över bron. Det rörde sig om många eftersom här gick och går huvudstråket av ledningar för vatten, el, gas, fjärrvärme, telefon och andra medier mellan Gamla stan och Norrmalm. I körbanan byttes samtliga rörledningar".toLowerCase(), "kolpwpwlbwspnn");
+		
 		Decryptor d = new Decryptor();
 		String fileName = args[0];
 		String ciphertext = d.readFile(fileName);
 		String plaintext = d.decrypt(ciphertext);
-		System.out.println(plaintext);
+		System.out.println("Plaintext: " + plaintext);
 	}
 }
