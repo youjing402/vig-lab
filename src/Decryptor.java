@@ -160,7 +160,7 @@ public class Decryptor {
 	
 	
 	/**
-	 * Decrypt the string in the given file. File name as the args[0].
+	 * Decrypt the string in the given file. File name as the command-line argument args[0].
 	 * @param args
 	 */
 	public static void main (String[] args) {
