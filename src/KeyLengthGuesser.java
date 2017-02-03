@@ -7,7 +7,7 @@ import java.util.TreeMap;
 public class KeyLengthGuesser {
 	public ArrayList<Integer> guess(String text){
 		HashMap<Integer,Double> guesses = new HashMap<Integer, Double>();
-		for(int i = 1; i <= 16; i++){
+		for(int i = 2; i <= 16; i++){
 			ArrayList<String> everyStr = this.strToEvery(i, text);
 			Double avg = 0.0;
 			for(int es = 0; es < everyStr.size(); es++){
@@ -16,7 +16,7 @@ public class KeyLengthGuesser {
 				Double IoC = this.IoC(occurrences, len);
 				avg = avg + IoC;
 			}
-			Double new_ioc = avg/i;
+			Double new_ioc = Math.abs(0.068 - (avg/i));
 			guesses.put(i, new_ioc);
 		}
 		
@@ -85,6 +85,6 @@ class ValueComparator implements Comparator {
 	public int compare(Object keyA, Object keyB){
 		Comparable valueA = (Comparable) map.get(keyA);
 		Comparable valueB = (Comparable) map.get(keyB);
-		return valueB.compareTo(valueA);
+		return valueA.compareTo(valueB);
 	}
 }

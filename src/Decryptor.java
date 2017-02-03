@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 public class Decryptor {
 	public static Character[] characterList = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'å', 'ä', 'ö', ' ', ',', '.'};
@@ -43,7 +44,8 @@ public class Decryptor {
 	 */
 	public String calculateKey (int keyLength, String ciphertext) {
 		int[] ciphercode = stringToCode(ciphertext);
-		double[] frequencyList = {0.0938, 0.0154, 0.0149, 0.047, 0.1015, 0.0203, 0.0286, 0.0209, 0.0582, 0.0061, 0.0314, 0.0528, 0.0347, 0.0854, 0.0448, 0.0184, 0.0002, 0.0843, 0.0659, 0.0769, 0.0192, 0.0242, 0.0014, 0.0016, 0.0071, 0.0007, 0.0134, 0.018, 0.0131};
+		//double[] frequencyList = {0.0938, 0.0154, 0.0149, 0.047, 0.1015, 0.0203, 0.0286, 0.0209, 0.0582, 0.0061, 0.0314, 0.0528, 0.0347, 0.0854, 0.0448, 0.0184, 0.0002, 0.0843, 0.0659, 0.0769, 0.0192, 0.0242, 0.0014, 0.0016, 0.0071, 0.0007, 0.0134, 0.018, 0.0131, 0.17};
+		double[] frequencyList = {0.0844, 0.011, 0.0144, 0.0412, 0.0828, 0.0152, 0.0289, 0.0239, 0.0421, 0.0076, 0.0272, 0.0404, 0.0298, 0.071, 0.0341, 0.0132, 0.0001, 0.0662, 0.0447, 0.0747, 0.0156, 0.0214, 0.0014, 0.0009, 0.0041, 0.0003, 0.0176, 0.0139, 0.0126, 0.145, 0.0076, 0.0076};
 		double[][] allShiftCharFrequency = new double[keyLength][frequencyList.length];
 		
 		// calculate the character frequency list for all groups. 
@@ -54,7 +56,7 @@ public class Decryptor {
 			int charLength = 0;
 			// count the occurrence of a letter (excluding punctuation)
 			for (int j=i; j<ciphercode.length; j+=keyLength) {
-				if(ciphercode[j] < 29) {
+				if(ciphercode[j] < 32) {
 					charLength++;
 					int charIndex = ciphercode[j];
 					charNumber[charIndex]++;
@@ -80,7 +82,7 @@ public class Decryptor {
 				// Calculate and sum up the score for all letters (excluding punctuation)
 				for (int j=0; j<frequencyList.length; j++) {
 					int modIndex = (i + j) % characterList.length;
-					if (modIndex < 29) {
+					if (modIndex < 32) {
 						count ++;
 						score += frequencyList[modIndex] * allShiftCharFrequency[m][j];
 					}
@@ -100,7 +102,7 @@ public class Decryptor {
 			key[i] = characterList[(32 - shiftList[i]) % 32];
 		}
 		
-		System.out.println("Guessed Key: " + new String(key));
+		System.out.println("Key Guessed: " + new String(key));
 		return new String(key);
 	}
 	
@@ -158,20 +160,41 @@ public class Decryptor {
 		}
 	}
 	
+	public void readAndDecrypt (String fileName) {
+		System.out.println("File name: " + fileName);
+		String ciphertext = readFile(fileName);
+		long startTime = System.currentTimeMillis();
+		long elapsedTime = 0L;
+		String plaintext = decrypt(ciphertext);
+		elapsedTime = (new Date()).getTime() - startTime;
+		System.out.println("Plaintext: " + plaintext);
+		System.out.println("Time used: " + elapsedTime + "ms");
+		System.out.println("");
+	}
+	
 	
 	/**
 	 * Decrypt the string in the given file. File name as the command-line argument args[0].
 	 * @param args
 	 */
 	public static void main (String[] args) {
-		Encryptor e = new Encryptor();
-		//String ciphertext = e.encrypt("Japan har under tidigare geologiska tidsåldrar haft landförbindelse med både nuvarande Ryssland och Korea. Förbindelsen mellan Japan och Korea bröts inte förrän under den senaste istiden. Både djur och växter är därför till relativt stor del nära släkt med arter på den asiatiska kontinenten, även om de är endemiska för Japan. Som exempel kan nämnas att stora trädslag såsom gran, tall, björk, viden, al, bok, ek och poppel finns representerade med olika arter. En del av dessa som till exempel blåskatan".toLowerCase(), "kakakal wwka");
+		//Encryptor e = new Encryptor();
+		//String ciphertext = e.encrypt("Japan har under tidigare geologiska tidsåldrar haft landförbindelse med både nuvarande Ryssland och Korea. Förbindelsen mellan Japan och Korea bröts inte förrän under den senaste istiden. Både djur och växter är därför till relativt stor del nära släkt med arter på den asiatiska kontinenten, även om de är endemiska för Japan. Som exempel kan nämnas att stora trädslag såsom gran, tall, björk, viden, al, bok, ek och poppel finns representerade med olika arter. En del av dessa som till exempel blåskatan".toLowerCase(), "makakal wwka");
 		//String ciphertext = e.encrypt("Stora delar av brons stenar demonterades och byttes vid behov, bland annat avlägsnades samtliga järndubbar som blivit rostiga. Ett stort problem var ledningsdragningarna över bron. Det rörde sig om många eftersom här gick och går huvudstråket av ledningar för vatten, el, gas, fjärrvärme, telefon och andra medier mellan Gamla stan och Norrmalm. I körbanan byttes samtliga rörledningar".toLowerCase(), "kolpwpwlbwspnn");
 		
 		Decryptor d = new Decryptor();
+		
+		// all files mode
+		for(int i=1; i<19; i++) {
+			if(i!=4 && i!=13) {
+				String fileName = "vig_group" + i + ".crypto";
+				d.readAndDecrypt(fileName);
+			}
+		}
+		
+		// command line single file mode
 		String fileName = args[0];
-		String ciphertext = d.readFile(fileName);
-		String plaintext = d.decrypt(ciphertext);
-		System.out.println("Plaintext: " + plaintext);
+		d.readAndDecrypt(fileName);
+		
 	}
 }
