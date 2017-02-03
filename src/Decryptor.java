@@ -185,12 +185,14 @@ public class Decryptor {
 		Decryptor d = new Decryptor();
 		
 		// all files mode
+		/*
 		for(int i=1; i<19; i++) {
-			if(i!=4 && i!=13) {
+			if(i!=4 && i != 13) {
 				String fileName = "vig_group" + i + ".crypto";
 				d.readAndDecrypt(fileName);
 			}
 		}
+		*/
 		
 		// command line single file mode
 		String fileName = args[0];
