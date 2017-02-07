@@ -7,7 +7,7 @@ import java.util.TreeMap;
 public class KeyLengthGuesser {
 	public ArrayList<Integer> guess(String text){
 		HashMap<Integer,Double> guesses = new HashMap<Integer, Double>();
-		for(int i = 2; i <= 16; i++){
+		for(int i = 2; i <= 635; i++){
 			ArrayList<String> everyStr = this.strToEvery(i, text);
 			Double avg = 0.0;
 			for(int es = 0; es < everyStr.size(); es++){

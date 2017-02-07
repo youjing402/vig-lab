@@ -102,7 +102,7 @@ public class Decryptor {
 			key[i] = characterList[(32 - shiftList[i]) % 32];
 		}
 		
-		System.out.println("Key Guessed: " + new String(key));
+		//System.out.println("Key Guessed: " + new String(key));
 		return new String(key);
 	}
 	
@@ -172,6 +172,15 @@ public class Decryptor {
 		System.out.println("");
 	}
 	
+	public String concatenateCiphertexts (int length) {
+		String concat = "";
+		for (int i=1; i<6; i++) {
+			String text = readFile("text"+ i +".crypto");
+			concat += text.substring(0, length);
+		}
+		return concat;
+	}
+	
 	
 	/**
 	 * Decrypt the string in the given file. File name as the command-line argument args[0].
@@ -184,6 +193,13 @@ public class Decryptor {
 		
 		Decryptor d = new Decryptor();
 		
+		for (int i=2; i<635; i++) {
+			String concactString = d.concatenateCiphertexts(i);
+			//int keyLength = d.guessKeyLength(concactString);
+			String key = d.calculateKey(i, concactString);
+			System.out.println(key);
+		}
+		
 		// all files mode
 		/*
 		for(int i=1; i<19; i++) {
@@ -195,8 +211,10 @@ public class Decryptor {
 		*/
 		
 		// command line single file mode
-		String fileName = args[0];
-		d.readAndDecrypt(fileName);
+		//String fileName = args[0];
+		//d.readAndDecrypt(fileName);
+		
+		
 		
 	}
 }
